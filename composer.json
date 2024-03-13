@@ -1,5 +1,5 @@
 {
-  "name": "torann/geoip",
+  "name": "chapdel/geoip",
   "description": "Support for multiple GeoIP services.",
   "keywords": [
     "laravel",
