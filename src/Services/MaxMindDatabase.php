@@ -43,6 +43,8 @@ class MaxMindDatabase extends AbstractService
     {
         $record = $this->reader->city($ip);
 
+        // dd($record);
+
         return $this->hydrate([
             'ip' => $ip,
             'iso_code' => $record->country->isoCode,
@@ -53,8 +55,16 @@ class MaxMindDatabase extends AbstractService
             'postal_code' => $record->postal->code,
             'lat' => $record->location->latitude,
             'lon' => $record->location->longitude,
+            'zoom' => $record->location->accuracyRadius,
             'timezone' => $record->location->timeZone,
             'continent' => $record->continent->code,
+            'privacy' => [
+                'relay' => false,
+                'hosting' => $record->traits->isHostingProvider,
+                'tor' => $record->traits->isTorExitNode,
+                'proxy' => $record->traits->isPublicProxy,
+                'vpn' => $record->traits->isAnonymousVpn,
+            ],
         ]);
     }
 

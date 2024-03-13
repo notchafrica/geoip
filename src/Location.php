@@ -18,6 +18,8 @@ use Illuminate\Support\Arr;
  * @property string|null $postal_code
  * @property float|null $lat
  * @property float|null $lon
+ * @property float|null $zoom
+ * @property array|null $privacy
  * @property string|null $timezone
  * @property string|null $continent
  * @property string|null $currency

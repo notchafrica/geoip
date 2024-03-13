@@ -70,6 +70,12 @@ class GeoIP
         'timezone' => 'America/New_York',
         'continent' => 'NA',
         'currency' => 'USD',
+        'privacy' => [
+            'vpn' => false,
+            'proxy' => false,
+            'relay' => false,
+            'hosting' => false,
+        ],
         'default' => true,
         'cached' => false,
     ];
@@ -111,6 +117,7 @@ class GeoIP
      */
     public function getLocation($ip = null)
     {
+
         // Get location data
         $this->location = $this->find($ip);
 
@@ -132,6 +139,7 @@ class GeoIP
      */
     private function find($ip = null)
     {
+
         // If IP not set, user remote IP
         $ip = $ip ?: $this->remote_ip;
 
@@ -147,6 +155,7 @@ class GeoIP
             try {
                 // Find location
                 $location = $this->getService()->locate($ip);
+
 
                 // Set currency if not already set by the service
                 if (! $location->currency) {
@@ -166,7 +175,12 @@ class GeoIP
             }
         }
 
-        return $this->getService()->hydrate($this->default_location);
+        $_location = $this->default_location;
+        $_location['ip'] = $ip;
+        $_location['timezone'] = config('app.timezone');
+        $_location['currency'] = config('app.currency', $_location['currency']);
+
+        return $this->getService()->hydrate($_location);
     }
 
     /**
